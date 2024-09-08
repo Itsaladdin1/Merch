@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .cart-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item img {
+            max-width: 200px;
+            height:150px;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .cart-item-details {
+            flex: 1;
+        }
+        .cart-item-details h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .cart-item-details p {
+            margin: 5px 0;
+        }
+        .cart-item-remove {
+            margin-left: 20px;
+            color: white;
+        }
+        .cart-summary {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .cart-summary p {
+            margin: 5px 0;
+        }
+        .discount-form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .discount-form input {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .discount-form button {
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #checkout-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #checkout-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h1>Cart</h1>
+        <div>
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <img src="{{ url_for('static', filename='uploads/' ~ item.merchandise.image_file) }}" alt="{{ item.merchandise.name }}">
+                <div class="cart-item-details">
+                    <h2>{{ item.merchandise.name }}</h2>
+                    <p>Pris: {{ item.merchandise.value }} SEK</p>
+                    <p>Antal: {{ item.quantity }}</p>
+                </div>
+                <div>
+                <label for="quantity">Antal</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="99">
+            </div>
+                <div class="cart-item-remove">
+                    <form action="{{ url_for('remove_from_cart', item_id=item.id) }}" method="POST">
+                        <button type="submit">Remove</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="cart-summary">
+            <p>Subtotal: {{ total + discount_value }} SEK</p>
+            <p>Discount: {{ discount_value }} SEK</p>
+            <p>Total: {{ total }} SEK</p>
+        </div>
+
+        <form id="discount-form" method="POST" class="discount-form">
+            <label for="discount_code">Discount Code:</label>
+            <input type="text" id="discount_code" name="discount_code">
+            <button type="submit">Apply Discount</button>
+        </form>
+
+        <button id="checkout-button">Checkout</button>
+    </div>
+
+    <script>
+    var stripe = Stripe('{{ key }}');  // Stripe public key
+    var checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function() {
+        // Extract the total amount displayed on the page
+        var totalAmount = "{{ total }}";
+
+        fetch('/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ total: totalAmount })
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(sessionId) {
+            return stripe.redirectToCheckout({ sessionId: sessionId.id });
+        })
+        .then(function(result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    });
+    </script>
+</body>
+</html>

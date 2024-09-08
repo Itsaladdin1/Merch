@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchandise</title>
+    <style>
+        body {
+            background-color: #333;
+            color: #f0e3d0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-top: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 80%;
+            margin: 20px auto;
+        }
+        .item {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .item p {
+            margin: 10px 0;
+        }
+        .shop-button {
+            background-color: #666;
+            color: #f0e3d0;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Add this to make the link look like a button */
+        }
+        .shop-button:hover {
+            background-color: #555;
+        }
+        .cart-link {
+            display: inline-block;
+            margin: 20px 0;
+            margin-left:90%;
+            color: #f0e3d0;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #666;
+            border-radius: 5px;
+        }
+        .cart-link:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cyber Shop</h1>
+        <a href="{{ url_for('cart') }}" class="cart-link">View Cart</a>
+    <div class="container">
+        {% for item in items %}
+        <div class="item">
+            <img src="{{ url_for('static', filename='uploads/' ~ item.image_file) }}" alt="{{ item.name }}">
+            <p>{{ item.information }}</p>
+            <a href="{{ url_for('item_detail', item_id=item.id) }}" class="shop-button">SHOP</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

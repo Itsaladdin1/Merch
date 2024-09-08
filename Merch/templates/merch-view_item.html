@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Item</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 2px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+</style>
+<body>
+    <h1>{{ merch.name }}</h1>
+    <p>{{ merch.information }}</p>
+    <p>Price: {{ merch.value }}</p>
+    <p>Specification: {{ merch.specification }}</p>
+
+    {% if merch.image_file %}
+        <img src="{{ url_for('static', filename='uploads/' + merch.image_file) }}" alt="Merchandise Image">
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
+
+    <p>Categories: {{ categories | join(', ') }}</p>
+    <p>Colors: {{ colors | join(', ') }}</p>
+    <p>Sizes: {{ sizes | join(', ') }}</p>
+</body>
+</html>

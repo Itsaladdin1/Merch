@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchandise List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.filter-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.filter-btn:hover {
+    background-color: #0056b3;
+}
+
+.filter-btn.active {
+    background-color: #0056b3;
+}
+
+.merch-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.merch-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.merch-item img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.merch-item h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.merch-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .merch-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .merch-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>Merchandise</h1>
+
+        <!-- Filter Buttons -->
+        <div class="filter-buttons">
+            <form action="{{ url_for('view_merchandise') }}" method="get">
+                <button type="submit" name="period" value="all" class="filter-btn {% if request.args.get('period') == 'all' %}active{% endif %}">All</button>
+                <button type="submit" name="period" value="this_month" class="filter-btn {% if request.args.get('period') == 'this_month' %}active{% endif %}">This Month</button>
+                <button type="submit" name="period" value="last_month" class="filter-btn {% if request.args.get('period') == 'last_month' %}active{% endif %}">Last Month</button>
+                <button type="submit" name="period" value="last_3_months" class="filter-btn {% if request.args.get('period') == 'last_3_months' %}active{% endif %}">Last 3 Months</button>
+                <button type="submit" name="period" value="last_6_months" class="filter-btn {% if request.args.get('period') == 'last_6_months' %}active{% endif %}">Last 6 Months</button>
+            </form>
+        </div>
+
+        <!-- Merchandise List -->
+        {% if merch %}
+            <div class="merch-list">
+                {% for item in merch %}
+                    <div class="merch-item">
+                        <img src="{{ url_for('static', filename='uploads/' + item.image_file) }}" alt="{{ item.name }}">
+                        <h2>{{ item.name }}</h2>
+                        <p><strong>Information:</strong> {{ item.information }}</p>
+                        <p><strong>Specification:</strong> {{ item.specification }}</p>
+                        <p><strong>Price:</strong> SEK {{ item.value }}</p>
+                        <p><strong>Category:</strong> {{ item.category }}</p>
+                        <p><strong>Colors:</strong> {{ item.color }}</p>
+                        <p><strong>Sizes:</strong> {{ item.size }}</p>
+                        <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn">View Details</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No merchandise items found for the selected period.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

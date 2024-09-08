@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Discounts</title>
+</head>
+<style>
+    /* styles.css */
+
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Button Styles */
+button.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.delete-button:hover {
+    background-color: #c82333;
+}
+
+</style>
+<body>
+    <h1>Discounts</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Percentage</th>
+                <th>Category</th>
+                <th>Usage Count</th>  <!-- New column for usage count -->
+                <th>Action</th>  <!-- New column for actions -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for discount in discounts %}
+            <tr>
+                <td>{{ discount.code }}</td>
+                <td>{{ discount.percentage }}</td>
+                <td>{{ discount.category }}</td>
+                <td>{{ discount.usage_count }}</td>  <!-- Display usage count -->
+                <td>
+                    <form action="{{ url_for('delete_discount', discount_id=discount.id) }}" method="post">
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

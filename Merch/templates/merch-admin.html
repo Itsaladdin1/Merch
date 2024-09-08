@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    /* styles.css */
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* Flash Messages */
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    width: 80%;
+}
+
+.flashes li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.flashes .info {
+    background-color: #007bff;
+}
+
+.flashes .success {
+    background-color: #28a745;
+}
+
+.flashes .warning {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.flashes .error {
+    background-color: #dc3545;
+}
+
+/* Buttons and Links */
+a {
+    text-decoration: none;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Container for Buttons */
+div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+a {
+    margin: 10px;
+}
+
+</style>
+<body>
+    <h1>Admin Panel</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <div>
+        <a href="{{ url_for('add_item') }}">
+            <button type="button">Add Merchandise Item</button>
+        </a>
+        <a href="{{ url_for('add_discount') }}">
+            <button type="button">Add Discount</button>
+        </a>
+        <a href="{{ url_for('register') }}">
+            <button type="button">Register Employee</button>
+        </a>
+        <a href="{{ url_for('information') }}">
+            <button type="button">View Information</button>
+        </a>
+        <a href="{{ url_for('manage_users') }}">
+            <button type="button">Manage Users</button>
+        </a>
+        <a href="{{ url_for('view_merchandise') }}">
+            <button type="button">View Merchandise</button>
+        </a>
+        <a href="{{ url_for('view_discounts') }}">
+            <button type="button">View Discounts</button>
+        </a>
+    </div>
+
+</body>
+</html>

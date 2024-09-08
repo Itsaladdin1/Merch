@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<style>
+    /* admin.css */
+
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+</style>
+<body>
+    <h1>Customer Information</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Purchase ID</th>
+                <th>User ID</th>
+                <th>Merchandise ID</th>
+                <th>Quantity</th>
+                <th>Sold At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.user_id }}</td>
+                <td>{{ sale.merchandise_id }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>{{ sale.sold_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

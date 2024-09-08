@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        /* Form Container */
+        form {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            transition: all 0.3s ease;
+        }
+
+        form:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Form Elements */
+        div {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="file"] {
+            display: block;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus, input[type="file"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
+        /* Submit Buttons */
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+            width: calc(50% - 10px);
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        input[type="submit"]:focus {
+            outline: none;
+        }
+
+        /* Checkbox Styles */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: calc(33.333% - 10px);
+            box-sizing: border-box;
+        }
+
+        .checkbox-group label:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .checkbox-group label input {
+            margin-right: 8px;
+            accent-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Merchandise Item</h1>
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('add_item') }}">
+        {{ merch_form.hidden_tag() }}
+        <div>
+            {{ merch_form.name.label }}
+            {{ merch_form.name(size=32) }}
+        </div>
+        <div>
+            {{ merch_form.information.label }}
+            {{ merch_form.information(rows=4) }}
+        </div>
+        <div>
+            {{ merch_form.value.label }}
+            {{ merch_form.value() }}
+        </div>
+        <div>
+            {{ merch_form.specification.label }}
+            {{ merch_form.specification(rows=4) }}
+        </div>
+        <div>
+            {{ merch_form.image.label }}
+            {{ merch_form.image() }}
+        </div>
+        <div>
+            {{ merch_form.category.label }}
+            <div class="checkbox-group">
+                {% for value, label in merch_form.category.choices %}
+                    <label>
+                        <input type="checkbox" name="{{ merch_form.category.name }}" value="{{ value }}"
+                               {% if merch_form.category.data and value in merch_form.category.data %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            {{ merch_form.colors.label }}
+            <div class="checkbox-group">
+                {% for value, label in merch_form.colors.choices %}
+                    <label>
+                        <input type="checkbox" name="{{ merch_form.colors.name }}" value="{{ value }}"
+                               {% if merch_form.colors.data and value in merch_form.colors.data %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            {{ merch_form.sizes.label }}
+            <div class="checkbox-group">
+                {% for value, label in merch_form.sizes.choices %}
+                    <label>
+                        <input type="checkbox" name="{{ merch_form.sizes.name }}" value="{{ value }}"
+                               {% if merch_form.sizes.data and value in merch_form.sizes.data %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <input type="submit" name="preview" value="View item" onclick="document.getElementById('preview-form').submit();">
+            <input type="submit" value="Add Item">
+        </div>
+    </form>
+
+    <form id="preview-form" method="POST" action="{{ url_for('add_item') }}" enctype="multipart/form-data" style="display: none;">
+        {{ merch_form.hidden_tag() }}
+        {{ merch_form.name() }}
+        {{ merch_form.information() }}
+        {{ merch_form.value() }}
+        {{ merch_form.specification() }}
+        {{ merch_form.image() }}
+        {% for value, label in merch_form.category.choices %}
+            <input type="checkbox" name="{{ merch_form.category.name }}" value="{{ value }}"
+                   {% if merch_form.category.data and value in merch_form.category.data %}checked{% endif %}>
+        {% endfor %}
+        {% for value, label in merch_form.colors.choices %}
+            <input type="checkbox" name="{{ merch_form.colors.name }}" value="{{ value }}"
+                   {% if merch_form.colors.data and value in merch_form.colors.data %}checked{% endif %}>
+        {% endfor %}
+        {% for value, label in merch_form.sizes.choices %}
+            <input type="checkbox" name="{{ merch_form.sizes.name }}" value="{{ value }}"
+                   {% if merch_form.sizes.data and value in merch_form.sizes.data %}checked{% endif %}>
+        {% endfor %}
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Discount</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    /* styles.css */
+
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form Container */
+form {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Form Elements */
+div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Submit Button */
+input[type="submit"] {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: block;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: scale(1.02);
+}
+
+input[type="submit"]:focus {
+    outline: none;
+}
+
+</style>
+<body>
+    <h1>Add Discount</h1>
+    <form method="POST">
+        {{ discount_form.hidden_tag() }}
+        <div>
+            {{ discount_form.code.label }}<br>
+            {{ discount_form.code(size=32) }}
+        </div>
+        <div>
+            {{ discount_form.percentage.label }}<br>
+            {{ discount_form.percentage() }}
+        </div>
+        <div>
+            {{ discount_form.category.label }}<br>
+            {{ discount_form.category(size=32) }}
+        </div>
+        <div>
+            {{ discount_form.submit() }}
+        </div>
+    </form>
+</body>
+</html>
